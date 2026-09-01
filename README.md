@@ -8,7 +8,7 @@
 
 ---
 
-## 📌 Project Overview 
+## 📌 Project Overview
 
 **CloudVault** is a modern, enterprise-grade, cloud-native document management platform specifically architected for university students and academic administrators. It bridges cloud computing infrastructure with academic lifecycle management, providing secure cloud storage, smart categorization, custom folder directory structures, real-time search, interactive telemetry, and a full administrative control panel.
 
@@ -319,6 +319,5 @@ firebase deploy --only hosting
 ## 👥 Contributors & Acknowledgements
 Developed for the **Major Cloud Computing Internship Program 2026**.
 Special thanks to Google Firebase and the Flask open-source ecosystem.
-#   C l o u d V a u l t 
- 
+#   C l o u d V a u l t  
  
