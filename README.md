@@ -319,3 +319,5 @@ firebase deploy --only hosting
 ## 👥 Contributors & Acknowledgements
 Developed for the **Major Cloud Computing Internship Program 2026**.
 Special thanks to Google Firebase and the Flask open-source ecosystem.
+#   C l o u d V a u l t  
+ 
