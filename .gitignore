@@ -1,0 +1,34 @@
+# Python & Virtual Environment
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.venv/
+ENV/
+
+# Sensitive Firebase Keys & Configuration
+serviceAccountKey.json
+*.json.secret
+.env
+.env.local
+.env.production
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Storage / Temp upload cache
+uploads/
+temp/
+scratch/
+*.log
+
+# Distribution & Build
+dist/
+build/
+*.egg-info/

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | CloudVault</title>
+    <!-- Google Fonts & Chart.js -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="dashboard-container">
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="brand-logo">
+                    <span>☁️</span>
+                    <span>CloudVault</span>
+                </a>
+                <span class="brand-badge">Vault</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">Workspace</div>
+                <button class="nav-item active" data-tab="overview">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-tab="documents">
+                    <span class="nav-icon">📄</span>
+                    <span>My Documents</span>
+                </button>
+                <button class="nav-item" data-tab="upload">
+                    <span class="nav-icon">☁️</span>
+                    <span>Upload Document</span>
+                </button>
+                <button class="nav-item" data-tab="folders">
+                    <span class="nav-icon">📁</span>
+                    <span>Folders</span>
+                </button>
+                <button class="nav-item" data-tab="analytics">
+                    <span class="nav-icon">📈</span>
+                    <span>Analytics</span>
+                </button>
+
+                <div class="nav-section-title">Account</div>
+                <button class="nav-item" data-tab="profile">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile & Storage</span>
+                </button>
+                <a href="admin.html" class="nav-item" id="adminPortalLink" style="display: none; color: #fbbf24;">
+                    <span class="nav-icon">👑</span>
+                    <span>Admin Dashboard</span>
+                </a>
+            </nav>
+
+            <!-- Sidebar Storage Quota Meter -->
+            <div class="sidebar-footer">
+                <div class="storage-quota-widget">
+                    <div class="quota-header">
+                        <span>Cloud Storage</span>
+                        <span id="sidebarStorageText">0 B / 1 GB</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="sidebarStorageBar" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <div class="user-profile-pill" onclick="switchTab('profile')">
+                    <div class="user-avatar user-avatar-initial">S</div>
+                    <div class="user-meta">
+                        <div class="user-name user-display-name">Student User</div>
+                        <div class="user-role-badge user-role-text">Student</div>
+                    </div>
+                    <button class="btn btn-icon btn-sm" style="color: #94a3b8; background: transparent;" title="Sign Out" onclick="event.stopPropagation(); handleLogout();">
+                        🚪
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="main-wrapper">
+
+            <!-- Top Sticky Navbar -->
+            <header class="top-navbar">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <button class="nav-toggle-btn" id="sidebarToggleBtn">☰</button>
+                    <div class="top-nav-search">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="topNavSearch" placeholder="Search files, categories, folders...">
+                    </div>
+                </div>
+
+                <div class="top-nav-actions">
+                    <button class="btn btn-primary btn-sm" onclick="switchTab('upload')">
+                        <span>+</span> Upload File
+                    </button>
+                    <button class="btn btn-secondary btn-sm" onclick="handleLogout()">
+                        Sign Out
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content Body -->
+            <main class="content-body">
+
+                <!-- TAB 1: OVERVIEW -->
+                <section id="tab-overview" class="tab-content-section">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">Welcome back, <span class="user-display-name">Student</span> 👋</h1>
+                            <p class="page-subtitle">Here is your academic cloud repository and storage overview.</p>
+                        </div>
+                        <button class="btn btn-outline-primary btn-sm" onclick="openCreateFolderModal()">
+                            + New Folder
+                        </button>
+                    </div>
+
+                    <!-- Stat Cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <div class="stat-label">Total Documents</div>
+                                <div class="stat-value" id="statTotalDocs">0</div>
+                            </div>
+                            <div class="stat-icon-wrapper stat-icon-blue">📄</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <div class="stat-label">Storage Used</div>
+                                <div class="stat-value" id="statTotalStorage">0 B</div>
+                            </div>
+                            <div class="stat-icon-wrapper stat-icon-emerald">💾</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <div class="stat-label">Active Folders</div>
+                                <div class="stat-value" id="statTotalFolders">0</div>
+                            </div>
+                            <div class="stat-icon-wrapper stat-icon-purple">📁</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <div class="stat-label">Cloud Security</div>
+                                <div class="stat-value" style="font-size: 1.25rem; color: #10b981;">AES-256</div>
+                            </div>
+                            <div class="stat-icon-wrapper stat-icon-amber">🛡️</div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Uploads Table -->
+                    <div class="upload-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h2 style="font-size: 1.2rem;">Recent Uploads</h2>
+                            <button class="btn btn-secondary btn-sm" onclick="switchTab('documents')">View All Files →</button>
+                        </div>
+                        <div id="recentUploadsContainer"></div>
+                    </div>
+                </section>
+
+                <!-- TAB 2: MY DOCUMENTS -->
+                <section id="tab-documents" class="tab-content-section" style="display: none;">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">My Documents</h1>
+                            <p class="page-subtitle">Organize, filter, download, and manage your uploaded coursework.</p>
+                        </div>
+                        <span class="category-pill" id="documentsCountBadge">0 Documents</span>
+                    </div>
+
+                    <!-- Filter Toolbar -->
+                    <div class="filter-toolbar">
+                        <div class="filter-group">
+                            <input type="text" id="docSearchInput" class="form-control filter-search-input" placeholder="Search by file name, tag...">
+                            
+                            <select id="categoryFilter" class="form-control form-select filter-select">
+                                <option value="All">All Categories</option>
+                                <option value="Assignments">Assignments</option>
+                                <option value="Certificates">Certificates</option>
+                                <option value="Notes">Notes</option>
+                                <option value="Projects">Projects</option>
+                                <option value="Marksheets">Marksheets</option>
+                                <option value="General">General</option>
+                            </select>
+
+                            <select id="folderFilter" class="form-control form-select filter-select">
+                                <option value="all">All Folders</option>
+                            </select>
+
+                            <select id="fileTypeFilter" class="form-control form-select filter-select">
+                                <option value="ALL">All File Types</option>
+                                <option value="PDF">PDF</option>
+                                <option value="DOCX">DOCX / DOC</option>
+                                <option value="TXT">TXT</option>
+                                <option value="PNG">PNG / JPG</option>
+                            </select>
+
+                            <select id="sortSelect" class="form-control form-select filter-select">
+                                <option value="newest">Newest First</option>
+                                <option value="oldest">Oldest First</option>
+                                <option value="name_asc">Name (A-Z)</option>
+                                <option value="name_desc">Name (Z-A)</option>
+                                <option value="size_desc">Size (Largest)</option>
+                                <option value="size_asc">Size (Smallest)</option>
+                            </select>
+                        </div>
+
+                        <!-- View Toggle -->
+                        <div class="view-toggle-btns">
+                            <button id="tableViewBtn" class="btn btn-primary btn-sm" title="Table View">☰</button>
+                            <button id="gridViewBtn" class="btn btn-secondary btn-sm" title="Grid View">⊞</button>
+                        </div>
+                    </div>
+
+                    <!-- Documents Container -->
+                    <div id="documentsTableContainer"></div>
+                    <div id="documentsGridContainer" class="documents-grid" style="display: none;"></div>
+                </section>
+
+                <!-- TAB 3: UPLOAD DOCUMENT -->
+                <section id="tab-upload" class="tab-content-section" style="display: none;">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">Upload Documents</h1>
+                            <p class="page-subtitle">Upload academic assignments, projects, notes, and certificates to your private cloud vault.</p>
+                        </div>
+                    </div>
+
+                    <div class="upload-card">
+                        <!-- Drag & Drop Zone -->
+                        <div class="drop-zone" id="uploadDropZone">
+                            <div class="drop-icon">☁️</div>
+                            <div class="drop-title">Drag and drop your academic files here</div>
+                            <div class="drop-hint">or <strong style="color: var(--primary);">click to browse</strong> from your computer</div>
+                            <input type="file" id="fileInput" style="display: none;" accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png">
+                        </div>
+
+                        <!-- Selected File Status -->
+                        <div id="fileSelectedIndicator" class="file-selected-indicator" style="display: none;">
+                            <div>
+                                <strong>Selected File:</strong> <span id="selectedFileName">file.pdf</span> 
+                                (<span id="selectedFileSize">0 KB</span>)
+                            </div>
+                            <button type="button" class="btn btn-sm btn-secondary" onclick="document.getElementById('fileInput').click()">Change</button>
+                        </div>
+
+                        <!-- Upload Options -->
+                        <div class="upload-options-grid">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" for="uploadCategorySelect">Document Category</label>
+                                <select id="uploadCategorySelect" class="form-control form-select">
+                                    <option value="Assignments">Assignments</option>
+                                    <option value="Certificates">Certificates</option>
+                                    <option value="Notes">Notes</option>
+                                    <option value="Projects">Projects</option>
+                                    <option value="Marksheets">Marksheets</option>
+                                    <option value="General" selected>General</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" for="uploadFolderSelect">Target Folder (Optional)</label>
+                                <select id="uploadFolderSelect" class="form-control form-select">
+                                    <option value="">No Folder (Root)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar Indicator -->
+                        <div id="uploadProgressBox" class="upload-progress-box">
+                            <div class="quota-header">
+                                <span id="uploadProgressText">Uploading...</span>
+                            </div>
+                            <div class="progress-bar-container" style="background: #e2e8f0;">
+                                <div class="progress-bar-fill" id="uploadProgressBar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                            <div style="font-size: 0.825rem; color: var(--text-muted);">
+                                🔒 Supported: <strong>PDF, DOC, DOCX, TXT, JPG, PNG</strong> (Max 50MB per file)
+                            </div>
+                            <button type="button" id="startUploadBtn" class="btn btn-primary" onclick="uploadDocumentSubmit()" disabled>
+                                Upload to CloudVault
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 4: FOLDERS -->
+                <section id="tab-folders" class="tab-content-section" style="display: none;">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">Folder Directory</h1>
+                            <p class="page-subtitle">Group and isolate your documents into custom academic semesters and subjects.</p>
+                        </div>
+                        <button class="btn btn-primary btn-sm" onclick="openCreateFolderModal()">
+                            + Create Folder
+                        </button>
+                    </div>
+
+                    <div id="foldersGridContainer" class="folders-grid"></div>
+                </section>
+
+                <!-- TAB 5: ANALYTICS -->
+                <section id="tab-analytics" class="tab-content-section" style="display: none;">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">Personal Cloud Analytics</h1>
+                            <p class="page-subtitle">Real-time metrics on your document distribution, storage consumption, and upload activity.</p>
+                        </div>
+                    </div>
+
+                    <div class="charts-grid">
+                        <!-- Chart 1: Categories Doughnut -->
+                        <div class="chart-card">
+                            <div class="chart-card-header">
+                                <h3 style="font-size: 1.1rem;">Documents by Category</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="categoryChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 2: File Types Bar -->
+                        <div class="chart-card">
+                            <div class="chart-card-header">
+                                <h3 style="font-size: 1.1rem;">File Type Distribution</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="fileTypeChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 3: Upload Activity Line -->
+                        <div class="chart-card" style="grid-column: 1 / -1;">
+                            <div class="chart-card-header">
+                                <h3 style="font-size: 1.1rem;">Upload Activity History</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="timelineChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 6: PROFILE -->
+                <section id="tab-profile" class="tab-content-section" style="display: none;">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">Student Profile & Storage</h1>
+                            <p class="page-subtitle">Your credentials, identity role, and allocated cloud quota.</p>
+                        </div>
+                    </div>
+
+                    <div class="upload-card" style="max-width: 600px;">
+                        <div style="display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.5rem;">
+                            <div class="user-avatar user-avatar-initial" style="width: 64px; height: 64px; font-size: 1.6rem;">S</div>
+                            <div>
+                                <h2 class="user-display-name" style="font-size: 1.3rem;">Student User</h2>
+                                <p class="user-display-email" style="font-size: 0.9rem;">student@university.edu</p>
+                                <span class="role-badge role-student user-role-text" style="margin-top: 0.35rem;">Student</span>
+                            </div>
+                        </div>
+
+                        <div style="border-top: 1px solid var(--border-color); padding-top: 1.25rem; display: flex; flex-direction: column; gap: 1rem;">
+                            <div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem;">Storage Allocation</div>
+                                <div class="progress-bar-container" style="height: 10px; background: #e2e8f0;">
+                                    <div class="progress-bar-fill" id="profileStorageBar" style="width: 2%;"></div>
+                                </div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.35rem;">1 GB Student Cloud Tier (Free)</div>
+                            </div>
+
+                            <div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">Security Protocol</div>
+                                <div style="font-weight: 600; font-size: 0.95rem; color: #10b981;">✅ Firebase ID Token Verification Active</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         MODALS
+         ========================================================================= -->
+
+    <!-- Create Folder Modal -->
+    <div class="modal-overlay" id="createFolderModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Create New Folder</h3>
+                <button class="modal-close-btn" onclick="closeModal('createFolderModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label" for="newFolderName">Folder Name</label>
+                    <input type="text" id="newFolderName" class="form-control" placeholder="e.g. Semester 1, Certificates, Projects">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="newFolderColor">Accent Color</label>
+                    <input type="color" id="newFolderColor" class="form-control" value="#2563eb" style="height: 44px; padding: 0.2rem;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" onclick="closeModal('createFolderModal')">Cancel</button>
+                <button class="btn btn-primary btn-sm" onclick="submitCreateFolder()">Create Folder</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Folder Options Context Modal -->
+    <div class="modal-overlay" id="folderOptionsModal">
+        <div class="modal-container" style="max-width: 380px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="folderOptionsTitle">Folder Options</h3>
+                <button class="modal-close-btn" onclick="closeModal('folderOptionsModal')">×</button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <button class="btn btn-secondary" onclick="triggerRenameFolder()">✏️ Rename Folder</button>
+                <button class="btn btn-danger" onclick="triggerDeleteFolder()">🗑️ Delete Folder</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rename Folder Modal -->
+    <div class="modal-overlay" id="renameFolderModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Rename Folder</h3>
+                <button class="modal-close-btn" onclick="closeModal('renameFolderModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label" for="renameFolderName">New Folder Name</label>
+                    <input type="text" id="renameFolderName" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" onclick="closeModal('renameFolderModal')">Cancel</button>
+                <button class="btn btn-primary btn-sm" onclick="submitRenameFolder()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Folder Modal -->
+    <div class="modal-overlay" id="deleteFolderModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title" style="color: var(--accent-rose);">Delete Folder</h3>
+                <button class="modal-close-btn" onclick="closeModal('deleteFolderModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this folder?</p>
+                <div style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <input type="checkbox" id="deleteFolderKeepFiles" checked>
+                    <label for="deleteFolderKeepFiles" style="font-size: 0.875rem;">Keep files inside this folder (move to Root)</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" onclick="closeModal('deleteFolderModal')">Cancel</button>
+                <button class="btn btn-danger-solid btn-sm" onclick="confirmDeleteFolder()">Delete Folder</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Document Modal -->
+    <div class="modal-overlay" id="deleteDocModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title" style="color: var(--accent-rose);">Delete Document</h3>
+                <button class="modal-close-btn" onclick="closeModal('deleteDocModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to permanently delete <strong id="deleteDocName">this file</strong>?</p>
+                <p style="font-size: 0.85rem; color: var(--accent-rose); margin-top: 0.5rem;">
+                    ⚠️ This file will be permanently removed from Firebase Storage and cannot be recovered.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" onclick="closeModal('deleteDocModal')">Cancel</button>
+                <button class="btn btn-danger-solid btn-sm" onclick="confirmDeleteDocument()">Delete Permanently</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Document Preview Modal -->
+    <div class="modal-overlay" id="documentPreviewModal">
+        <div class="modal-container preview-modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title" id="previewModalTitle">Document Preview</h3>
+                <button class="modal-close-btn" onclick="closeModal('documentPreviewModal')">×</button>
+            </div>
+            <div class="modal-body" id="previewModalBody"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" onclick="closeModal('documentPreviewModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <script type="module" src="js/dashboard.js"></script>
+</body>
+</html>

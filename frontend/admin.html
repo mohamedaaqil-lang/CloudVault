@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrator Dashboard | CloudVault</title>
+    <!-- Google Fonts & Chart.js -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="dashboard-container">
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="admin.html" class="brand-logo">
+                    <span>👑</span>
+                    <span>CloudVault</span>
+                </a>
+                <span class="brand-badge" style="background: #f59e0b;">Admin</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">Administration</div>
+                <button class="nav-item active" data-tab="overview">
+                    <span class="nav-icon">📊</span>
+                    <span>Admin Overview</span>
+                </button>
+                <button class="nav-item" data-tab="users">
+                    <span class="nav-icon">👥</span>
+                    <span>User Management</span>
+                </button>
+                <button class="nav-item" data-tab="documents">
+                    <span class="nav-icon">📂</span>
+                    <span>Document Audit</span>
+                </button>
+                <button class="nav-item" data-tab="analytics">
+                    <span class="nav-icon">📈</span>
+                    <span>Platform Telemetry</span>
+                </button>
+
+                <div class="nav-section-title">Navigation</div>
+                <a href="dashboard.html" class="nav-item">
+                    <span class="nav-icon">🎓</span>
+                    <span>Student View</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-profile-pill">
+                    <div class="user-avatar" style="background: #f59e0b;">A</div>
+                    <div class="user-meta">
+                        <div class="user-name">Administrator</div>
+                        <div class="user-role-badge">Super User</div>
+                    </div>
+                    <button class="btn btn-icon btn-sm" style="color: #94a3b8; background: transparent;" title="Sign Out" onclick="handleLogout()">
+                        🚪
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="main-wrapper">
+
+            <!-- Top Sticky Navbar -->
+            <header class="top-navbar">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <button class="nav-toggle-btn" id="sidebarToggleBtn">☰</button>
+                    <div style="font-weight: 700; color: var(--text-main);">
+                        🛡️ System Administration Console
+                    </div>
+                </div>
+
+                <div class="top-nav-actions">
+                    <a href="dashboard.html" class="btn btn-outline-primary btn-sm">
+                        ← Student Workspace
+                    </a>
+                    <button class="btn btn-secondary btn-sm" onclick="handleLogout()">
+                        Sign Out
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content Body -->
+            <main class="content-body">
+
+                <!-- ADMIN TAB 1: OVERVIEW -->
+                <section id="admin-tab-overview" class="tab-content-section">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">Platform Operations Overview</h1>
+                            <p class="page-subtitle">Real-time system telemetry, active student storage utilization, and security auditing.</p>
+                        </div>
+                    </div>
+
+                    <!-- Stat Cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <div class="stat-label">Registered Users</div>
+                                <div class="stat-value" id="statAdminUsers">0</div>
+                            </div>
+                            <div class="stat-icon-wrapper stat-icon-blue">👥</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <div class="stat-label">Total Documents</div>
+                                <div class="stat-value" id="statAdminDocs">0</div>
+                            </div>
+                            <div class="stat-icon-wrapper stat-icon-purple">📄</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <div class="stat-label">Storage Consumed</div>
+                                <div class="stat-value" id="statAdminStorage">0 B</div>
+                            </div>
+                            <div class="stat-icon-wrapper stat-icon-emerald">💾</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <div class="stat-label">Total Folders</div>
+                                <div class="stat-value" id="statAdminFolders">0</div>
+                            </div>
+                            <div class="stat-icon-wrapper stat-icon-amber">📁</div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Navigation Cards -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+                        <div class="upload-card" style="cursor: pointer;" onclick="switchAdminTab('users')">
+                            <h3 style="margin-bottom: 0.5rem;">👥 Manage Registered Users</h3>
+                            <p style="font-size: 0.875rem;">View all student accounts, inspect individual quotas, and modify user permissions.</p>
+                            <span style="display: inline-block; margin-top: 1rem; color: var(--primary); font-weight: 600;">Open User Registry →</span>
+                        </div>
+
+                        <div class="upload-card" style="cursor: pointer;" onclick="switchAdminTab('documents')">
+                            <h3 style="margin-bottom: 0.5rem;">📂 Document Moderation</h3>
+                            <p style="font-size: 0.875rem;">Audit uploaded student coursework, search by uploader, and moderate violating files.</p>
+                            <span style="display: inline-block; margin-top: 1rem; color: var(--primary); font-weight: 600;">Open Document Audit →</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ADMIN TAB 2: USER MANAGEMENT -->
+                <section id="admin-tab-users" class="tab-content-section" style="display: none;">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">User Management</h1>
+                            <p class="page-subtitle">Inspect registered students, monitor individual cloud usage, and grant administrative roles.</p>
+                        </div>
+                        <span class="category-pill" id="adminUsersCountBadge">0 Users</span>
+                    </div>
+
+                    <!-- User Filter Toolbar -->
+                    <div class="filter-toolbar">
+                        <div class="filter-group">
+                            <input type="text" id="userSearchInput" class="form-control filter-search-input" placeholder="Search by name or email...">
+                            <select id="userRoleFilter" class="form-control form-select filter-select">
+                                <option value="all">All Roles</option>
+                                <option value="student">Students</option>
+                                <option value="admin">Administrators</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Users Table -->
+                    <div id="adminUsersTableContainer"></div>
+                </section>
+
+                <!-- ADMIN TAB 3: DOCUMENT MODERATION -->
+                <section id="admin-tab-documents" class="tab-content-section" style="display: none;">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">Document Moderation & Audit</h1>
+                            <p class="page-subtitle">System-wide monitoring of all student academic files stored in Firebase Storage.</p>
+                        </div>
+                        <span class="category-pill" id="adminDocsCountBadge">0 Documents</span>
+                    </div>
+
+                    <!-- Filter Toolbar -->
+                    <div class="filter-toolbar">
+                        <div class="filter-group">
+                            <input type="text" id="adminDocSearchInput" class="form-control filter-search-input" placeholder="Search file name, student name, email...">
+                            
+                            <select id="adminCategoryFilter" class="form-control form-select filter-select">
+                                <option value="All">All Categories</option>
+                                <option value="Assignments">Assignments</option>
+                                <option value="Certificates">Certificates</option>
+                                <option value="Notes">Notes</option>
+                                <option value="Projects">Projects</option>
+                                <option value="Marksheets">Marksheets</option>
+                                <option value="General">General</option>
+                            </select>
+
+                            <select id="adminFileTypeFilter" class="form-control form-select filter-select">
+                                <option value="ALL">All Types</option>
+                                <option value="PDF">PDF</option>
+                                <option value="DOCX">DOCX</option>
+                                <option value="TXT">TXT</option>
+                                <option value="PNG">PNG / JPG</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Documents Table -->
+                    <div id="adminDocumentsTableContainer"></div>
+                </section>
+
+                <!-- ADMIN TAB 4: PLATFORM TELEMETRY -->
+                <section id="admin-tab-analytics" class="tab-content-section" style="display: none;">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">Platform Telemetry & Analytics</h1>
+                            <p class="page-subtitle">Global storage distribution and document ingestion rates across the university.</p>
+                        </div>
+                    </div>
+
+                    <div class="charts-grid">
+                        <!-- Chart 1: Global Categories -->
+                        <div class="chart-card">
+                            <div class="chart-card-header">
+                                <h3 style="font-size: 1.1rem;">Category Breakdown</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="adminCategoryChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 2: Global File Types -->
+                        <div class="chart-card">
+                            <div class="chart-card-header">
+                                <h3 style="font-size: 1.1rem;">File Formats</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="adminFileTypeChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 3: Global Activity Timeline -->
+                        <div class="chart-card" style="grid-column: 1 / -1;">
+                            <div class="chart-card-header">
+                                <h3 style="font-size: 1.1rem;">Platform-Wide Upload Velocity</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="adminActivityChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         ADMIN MODALS
+         ========================================================================= -->
+
+    <!-- Change Role Modal -->
+    <div class="modal-overlay" id="changeRoleModal">
+        <div class="modal-container" style="max-width: 420px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Modify User Role</h3>
+                <button class="modal-close-btn" onclick="closeAdminModal('changeRoleModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Change authorization role for <strong id="changeRoleUserName">User</strong>:</p>
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label class="form-label" for="newRoleSelect">Assign Role</label>
+                    <select id="newRoleSelect" class="form-control form-select">
+                        <option value="student">Student (Standard User)</option>
+                        <option value="admin">Administrator (Full Control)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" onclick="closeAdminModal('changeRoleModal')">Cancel</button>
+                <button class="btn btn-primary btn-sm" onclick="submitChangeRole()">Update Role</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Delete Document Modal -->
+    <div class="modal-overlay" id="adminDeleteDocModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title" style="color: var(--accent-rose);">Admin Moderation Deletion</h3>
+                <button class="modal-close-btn" onclick="closeAdminModal('adminDeleteDocModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Permanently remove <strong id="adminDeleteDocName">Document</strong> from the student's vault?</p>
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label class="form-label" for="adminDeleteReason">Moderation Reason (Optional)</label>
+                    <input type="text" id="adminDeleteReason" class="form-control" placeholder="e.g. Inappropriate file, copyright violation">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" onclick="closeAdminModal('adminDeleteDocModal')">Cancel</button>
+                <button class="btn btn-danger-solid btn-sm" onclick="confirmAdminDeleteDoc()">Delete File</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <script type="module" src="js/admin.js"></script>
+</body>
+</html>

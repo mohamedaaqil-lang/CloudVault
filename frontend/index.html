@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudVault | Secure Cloud-Based Student Document Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .hero-section {
+            padding: 5rem 2rem 4rem 2rem;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 0.4rem 1rem;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            border: 1px solid #bfdbfe;
+        }
+        .hero-title {
+            font-size: 3.25rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1.15;
+            margin-bottom: 1.25rem;
+            background: linear-gradient(135deg, #0f172a 30%, #2563eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-desc {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            max-width: 720px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hero-cta-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 3rem auto 5rem auto;
+            padding: 0 2rem;
+        }
+        .feature-box {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-normal);
+        }
+        .feature-box:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: #93c5fd;
+        }
+        .feature-icon-wrapper {
+            width: 52px;
+            height: 52px;
+            border-radius: var(--radius-lg);
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin-bottom: 1.25rem;
+        }
+        .landing-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 2rem;
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation Header -->
+    <header class="landing-header">
+        <div class="brand-logo" style="color: var(--text-main);">
+            <span>☁️</span>
+            <span>CloudVault</span>
+            <span class="brand-badge">Academic Cloud</span>
+        </div>
+        <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <a href="login.html" class="btn btn-secondary btn-sm">Log In</a>
+            <a href="register.html" class="btn btn-primary btn-sm">Get Started Free</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main>
+        <section class="hero-section">
+            <div class="hero-badge">
+                <span>🛡️</span> Powered by Firebase & Python Flask Microservices
+            </div>
+            <h1 class="hero-title">
+                Secure Cloud-Based Student Document Management
+            </h1>
+            <p class="hero-desc">
+                An enterprise-grade cloud computing internship platform engineered for university students. 
+                Upload, categorize, folder-organize, search, and securely share your academic coursework, certificates, marksheets, and project files.
+            </p>
+            <div class="hero-cta-group">
+                <a href="register.html" class="btn btn-primary btn-lg">Create Student Vault</a>
+                <a href="login.html" class="btn btn-secondary btn-lg">Sign In to Dashboard</a>
+            </div>
+        </section>
+
+        <!-- Core Features Grid -->
+        <section class="features-grid">
+            <div class="feature-box">
+                <div class="feature-icon-wrapper">🔒</div>
+                <h3 style="margin-bottom: 0.5rem; font-size: 1.2rem;">Zero Public Storage</h3>
+                <p>Documents are stored in private Firebase Storage buckets and accessed solely via time-limited, signed URLs (v4 SHA256).</p>
+            </div>
+
+            <div class="feature-box">
+                <div class="feature-icon-wrapper">📁</div>
+                <h3 style="margin-bottom: 0.5rem; font-size: 1.2rem;">Semester & Folder Organization</h3>
+                <p>Organize academic files by semester, course, or custom tags. Safe folder deletion preserves documents automatically.</p>
+            </div>
+
+            <div class="feature-box">
+                <div class="feature-icon-wrapper">🔍</div>
+                <h3 style="margin-bottom: 0.5rem; font-size: 1.2rem;">Dynamic Real-Time Search</h3>
+                <p>Instant multi-criteria filtering across file categories, file extensions (PDF, DOCX, TXT, PNG), and upload timestamps.</p>
+            </div>
+
+            <div class="feature-box">
+                <div class="feature-icon-wrapper">📊</div>
+                <h3 style="margin-bottom: 0.5rem; font-size: 1.2rem;">Interactive Chart.js Telemetry</h3>
+                <p>Visualize personal storage utilization, category allocations, and monthly upload trends through responsive live charts.</p>
+            </div>
+
+            <div class="feature-box">
+                <div class="feature-icon-wrapper">👑</div>
+                <h3 style="margin-bottom: 0.5rem; font-size: 1.2rem;">Administrator Control Suite</h3>
+                <p>Comprehensive administrative portal for platform-wide user auditing, document moderation, storage telemetry, and RBAC.</p>
+            </div>
+
+            <div class="feature-box">
+                <div class="feature-icon-wrapper">⚡</div>
+                <h3 style="margin-bottom: 0.5rem; font-size: 1.2rem;">High-Performance Flask REST API</h3>
+                <p>Robust Python backend enforcing token validation, CORS security, mime-type verification, and streaming downloads.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 2rem; border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.875rem;">
+        <p>© 2026 CloudVault - Cloud Computing Internship Major Project. Built with Flask, Firebase & Chart.js.</p>
+    </footer>
+
+    <script type="module" src="js/auth.js"></script>
+</body>
+</html>
